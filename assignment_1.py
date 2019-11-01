@@ -13,7 +13,6 @@ input_data_1 = np.array([1,0,0,0,0,0,0,0]).reshape(1,-1)
 
 # creating weights 
  
- 
 def random_weights(rows,columns):
     return np.random.rand(rows, columns)
 
