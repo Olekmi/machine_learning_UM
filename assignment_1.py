@@ -10,19 +10,19 @@ def sigmoid(x):
 
 def neural_network ():
     # input_data_1 = np.array([1,0,0,0,0,0,0,0]).reshape(1,-1)
-    input_data_1 = np.identity(8)
+    input_data_1_in = np.eye(8,dtype=int)
     error_3 = 1
-    alpha = 0.02
+    alpha = 0.08
     # initializing weights for each node
     nodes_weights = random_weights(8,3)
     # output layer weights
     output_layer_weights = random_weights(4,8)
-    for i in range(100):
+    for i in range(30):
         for j in range(8):
-            input_data_1 = input_data_1[j].reshape(-1,1)
+            input_data_1 = input_data_1_in[j].reshape(1,-1)
             print("iteration:",i)
             print("mean error",abs(np.mean(error_3)))
-            if np.mean(np.absolute(error_3)) < 0.35:
+            if np.mean(np.absolute(error_3)) < 0.55:
                 break
 
             # hidden nodes' inputs 
@@ -72,7 +72,7 @@ def neural_network ():
             output_layer_weights = output_layer_weights - alpha* output_layer_weights
             # te same wyliczenia:
             # nie bierzemy pod uwagé 1 nodu z hidden layer !!
-            nodes_weights = [error_2[0][1:4]].dot(input_data_1.T)
+            nodes_weights = error_2[0][1:4] * input_data_1.transpose() 
             # aktualizujemy wagi dla polaczen z input layer do hidden layer
             nodes_weights = nodes_weights - alpha*nodes_weights 
             
