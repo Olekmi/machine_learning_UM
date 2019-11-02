@@ -13,11 +13,13 @@ def neural_network ():
     input_data_1_in = np.eye(8,dtype=int)
     error_3 = 1
     alpha = 0.08
+    par_lambda = 0.1
+    iterations = 30
     # initializing weights for each node
     nodes_weights = random_weights(8,3)
     # output layer weights
     output_layer_weights = random_weights(4,8)
-    for i in range(30):
+    for i in range(iterations):
         for j in range(8):
             input_data_1 = input_data_1_in[j].reshape(1,-1)
             print("iteration:",i)
@@ -44,7 +46,7 @@ def neural_network ():
             output_1 = np.dot(output_hidden_nodes,output_layer_weights)
 
             # “errors” of nodes in layer 3
-            error_3 = output_1 - input_data_1
+            error_3 = (output_1 - input_data_1)#+par_lambda*0.5*(output_layer_weights*output_layer_weights)
 
             # “errors” of nodes in layer 2
             # for second layer for first node
