@@ -4,7 +4,6 @@ from math import exp
 def normal_distribution(rows,cols):
     mu, sigma = 0, 0.01 # mean and standard deviation
     s = np.random.normal(mu, sigma, cols)
-    s_0 = s
     for i in range(rows-1):
         s = np.vstack([s,np.random.normal(mu, sigma, cols)])
     return np.array(s) 
@@ -12,22 +11,21 @@ def normal_distribution(rows,cols):
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 
-def neural_network ():
+def neural_network (alpha_0, decay_rate, iterations, stop_criterion):
     input_data = np.eye(8,dtype=int)
     # initializing weights for each node
     nodes_weights = normal_distribution(8,3)
-    # output layer weights
     output_layer_weights = normal_distribution(4,8)
-   
-    alpha_0 = 0.15
-    delta_3 = 1
-    decay_rate = 0.00001
-    iterations = 10000
-    stop_criterion = 0.01
+    iteration = []
+    mean = []
+    delta_3 = 0.5
 
     for i in range(iterations):
         print("iteration:",i)
         print("mean error",np.mean(np.absolute(delta_3)))
+        iteration.append(i)
+        mean.append(np.mean(np.absolute(delta_3)))
+
         if np.mean(np.absolute(delta_3)) < stop_criterion:
                 break
         alpha = (1/(1+decay_rate*i))*alpha_0    
@@ -42,10 +40,9 @@ def neural_network ():
         output_layer_weights = output_layer_weights - alpha*np.dot( output_hidden_nodes, delta_3)
         nodes_weights = nodes_weights.T - alpha*np.dot(delta_2[1:4,:], input_data.transpose() )
         nodes_weights = nodes_weights.T
-    print(np.round(abs(output_1),3))
+    # print(np.round(abs(output_1),3))
     print("error", delta_3)
-    print("weights_2", np.round(nodes_weights,2))
-    print("weights_3", np.round(output_layer_weights,2))
-    return output_1, delta_3
+    # print("weights_2", np.round(nodes_weights,2))
+    # print("weights_3", np.round(output_layer_weights,2))
+    return iteration, mean
 
-neural_network ()
