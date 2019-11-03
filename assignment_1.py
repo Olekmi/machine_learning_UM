@@ -6,28 +6,30 @@ def normal_distribution(rows,cols):
     s = np.random.normal(mu, sigma, cols)
     s_0 = s
     for i in range(rows-1):
-        s = np.vstack([s, s_0])
+        # s = np.vstack([s,s0])
+        s = np.vstack([s,np.random.normal(mu, sigma, cols)])
     arrays = np.array(s)
     print(arrays)
-    return arrays
+    return arrays 
 
 def random_weights(rows,columns):#not used anymore
-    epsilon = 10000
+    epsilon = 1000
     # return np.random.rand(rows, columns)/epsilon
     return np.random.rand(rows, columns)/epsilon
 
 # sigmoid function
 def sigmoid(x):
-    return 1/(1+exp(-x))
+    return 1/(1+np.exp(-x))
 
 def neural_network ():
     # input_data_1 = np.array([1,0,0,0,0,0,0,0]).reshape(1,-1)
-    input_data_1_in = np.eye(8,dtype=int)
+    # input_data_1_in = np.eye(8,dtype=int)
+    input_data_1 = np.eye(8,dtype=int)
     error_3 = 1
-    alpha_0 = 0.04
-    decay_rate = 0.5
-    iterations = 100
-    stop_criterion = 0.1
+    alpha_0 = 0.18
+    decay_rate = 0.00001
+    iterations = 60000
+    stop_criterion = 0.05
     # initializing weights for each node
     nodes_weights = normal_distribution(8,3)
     # output layer weights
@@ -38,7 +40,7 @@ def neural_network ():
                 break
         for j in range(8):
             alpha = (1/(1+decay_rate*i))*alpha_0
-            input_data_1 = input_data_1_in[j].reshape(1,-1)
+            # input_data_1 = input_data_1_in[j].reshape(1,-1)
             
             print("mean error",np.mean(np.absolute(error_3)))
             if np.mean(np.absolute(error_3)) < stop_criterion:
@@ -60,7 +62,10 @@ def neural_network ():
             output_hidden_nodes = np.array(output_hidden_nodes).reshape(1,-1)
 
             # outputs
-            output_1 = np.dot(output_hidden_nodes,output_layer_weights)
+           
+            # output_layer_weights = output_layer_weights.T
+            # print(np.shape(output_layer_weights))
+            output_1 = sigmoid(np.dot(output_hidden_nodes,output_layer_weights))
 
             # “errors” of nodes in layer 3
             error_3 = (output_1 - input_data_1)#+par_lambda*0.5*(output_layer_weights*output_layer_weights)
@@ -84,11 +89,13 @@ def neural_network ():
             error_3 = error_3.reshape(-1,1)
             # update weights 
 
-            output_layer_weights = error_3*output_hidden_nodes
             output_layer_weights = output_layer_weights.transpose()
+            output_layer_weights = output_layer_weights - alpha* output_hidden_nodes * error_3
+            output_layer_weights = output_layer_weights.transpose()
+            
 
-            # setting alpha    
-            output_layer_weights = output_layer_weights - alpha* output_layer_weights
+               
+            
             # te same wyliczenia:
             # nie bierzemy pod uwagé 1 nodu z hidden layer !!
             nodes_weights = error_2[0][1:4] * input_data_1.transpose() 
