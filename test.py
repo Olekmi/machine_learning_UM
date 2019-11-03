@@ -6,13 +6,9 @@ def normal_distribution(rows,cols):
     s = np.random.normal(mu, sigma, cols)
     s_0 = s
     for i in range(rows-1):
-        # s = np.vstack([s,s0])
         s = np.vstack([s,np.random.normal(mu, sigma, cols)])
-    arrays = np.array(s)
-    # print(arrays)
-    return arrays 
+    return np.array(s) 
 
-# sigmoid function
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 
@@ -38,19 +34,12 @@ def neural_network ():
         hidden_node_input = np.dot(input_data ,nodes_weights)
         activation_hidden_layer = sigmoid(hidden_node_input)
         activation_hidden_layer  = activation_hidden_layer.T
-        # hidden layer output( array)
         bias = np.array([1,1,1,1,1,1,1,1])
         output_hidden_nodes = np.vstack([bias, activation_hidden_layer])
         output_1 = sigmoid(np.dot(output_hidden_nodes.T,output_layer_weights))
         delta_3 = (output_1 - input_data)
         delta_2 = np.dot(output_layer_weights, delta_3) * output_hidden_nodes * (1 - output_hidden_nodes)
-        # error_2= [error_2_1, error_2_2, error_2_3, error_2_4]
-        # error_2 = np.array(error_2).reshape(1,-1)
-        # error_3 = error_3.reshape(-1,1)
-        # update weights 
-        # output_layer_weights = output_layer_weights.transpose()
         output_layer_weights = output_layer_weights - alpha*np.dot( output_hidden_nodes, delta_3)
-        # aktualizujemy wagi dla polaczen z input layer do hidden layer
         nodes_weights = nodes_weights.T - alpha*np.dot(delta_2[1:4,:], input_data.transpose() )
         nodes_weights = nodes_weights.T
     print(np.round(abs(output_1),3))
@@ -59,7 +48,4 @@ def neural_network ():
     print("weights_3", np.round(output_layer_weights,2))
     return output_1, delta_3
 
-    
-
 neural_network ()
-
