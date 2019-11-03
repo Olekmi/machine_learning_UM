@@ -41,7 +41,7 @@ def neural_network (alpha_0, decay_rate, iterations, stop_criterion):
         nodes_weights = nodes_weights.T - alpha*np.dot(delta_2[1:4,:], input_data.transpose() )
         nodes_weights = nodes_weights.T
     # print(np.round(abs(output_1),3))
-    print("error", delta_3)
+    # print("error", delta_3)
     # print("weights_2", np.round(nodes_weights,2))
     # print("weights_3", np.round(output_layer_weights,2))
     return iteration, mean

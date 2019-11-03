@@ -1,4 +1,4 @@
-import test
+import assignment1_test as test
 import numpy as np
 import matplotlib.pyplot as plt
 
