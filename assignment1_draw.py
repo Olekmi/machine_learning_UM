@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 
 iterations = 7000
 stop_criterion = 0.01
-i_r, mean_r = test.neural_network(0.15,0.0001,iterations,stop_criterion)
-i_b, mean_b = test.neural_network(0.1,0.0001,iterations,stop_criterion)
-i_g, mean_g = test.neural_network(0.05,0.0001,iterations,stop_criterion)
+decay_rate = 0.0001
+
+i_r, mean_r = test.neural_network(0.15,decay_rate,iterations,stop_criterion)
+i_b, mean_b = test.neural_network(0.1,decay_rate,iterations,stop_criterion)
+i_g, mean_g = test.neural_network(0.05,decay_rate,iterations,stop_criterion)
 
 plt.plot(i_r, mean_r, 'r-', label='alpha = 0.15')
 plt.plot(i_b, mean_b, 'b-', label='alpha = 0.1')
