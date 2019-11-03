@@ -1,8 +1,20 @@
 import numpy as np 
 from math import exp
- 
-def random_weights(rows,columns):
-    return np.random.rand(rows, columns)
+
+def normal_distribution(rows,cols):
+    mu, sigma = 0, 0.01 # mean and standard deviation
+    s = np.random.normal(mu, sigma, cols)
+    s_0 = s
+    for i in range(rows-1):
+        s = np.vstack([s, s_0])
+    arrays = np.array(s)
+    print(arrays)
+    return arrays
+
+def random_weights(rows,columns):#not used anymore
+    epsilon = 10000
+    # return np.random.rand(rows, columns)/epsilon
+    return np.random.rand(rows, columns)/epsilon
 
 # sigmoid function
 def sigmoid(x):
@@ -12,20 +24,24 @@ def neural_network ():
     # input_data_1 = np.array([1,0,0,0,0,0,0,0]).reshape(1,-1)
     input_data_1_in = np.eye(8,dtype=int)
     error_3 = 1
-    alpha_0 = 0.08
-    decay_rate = 1
-    iterations = 30
+    alpha_0 = 0.04
+    decay_rate = 0.5
+    iterations = 100
+    stop_criterion = 0.1
     # initializing weights for each node
-    nodes_weights = random_weights(8,3)
+    nodes_weights = normal_distribution(8,3)
     # output layer weights
-    output_layer_weights = random_weights(4,8)
+    output_layer_weights = normal_distribution(4,8)
     for i in range(iterations):
+        print("iteration:",i)
+        if np.mean(np.absolute(error_3)) < stop_criterion:
+                break
         for j in range(8):
             alpha = (1/(1+decay_rate*i))*alpha_0
             input_data_1 = input_data_1_in[j].reshape(1,-1)
-            print("iteration:",i)
-            print("mean error",abs(np.mean(error_3)))
-            if np.mean(np.absolute(error_3)) < 0.55:
+            
+            print("mean error",np.mean(np.absolute(error_3)))
+            if np.mean(np.absolute(error_3)) < stop_criterion:
                 break
 
             # hidden nodes' inputs 
@@ -83,7 +99,7 @@ def neural_network ():
 
 output_1, error_3 = neural_network()
 print(output_1)
-print(error_3)
+print("error", error_3)
 
 
 
