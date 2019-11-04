@@ -21,8 +21,8 @@ def neural_network (alpha_0, decay_rate, iterations, stop_criterion):
     delta_3 = 0.5
 
     for i in range(iterations):
-        print("iteration:",i)
-        print("mean error",np.mean(np.absolute(delta_3)))
+        # print("iteration:",i)
+        # print("mean error",np.mean(np.absolute(delta_3)))
         iteration.append(i)
         mean.append(np.mean(np.absolute(delta_3)))
 
